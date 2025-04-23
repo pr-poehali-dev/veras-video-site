@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link as ScrollLink } from "react-scroll";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -14,6 +13,17 @@ const Navbar = () => {
     { name: "Контакты", target: "contact" },
   ];
 
+  const scrollToSection = (targetId: string) => {
+    const element = document.getElementById(targetId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 70,
+        behavior: "smooth",
+      });
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="fixed w-full bg-background/90 backdrop-blur-sm z-50 border-b border-border/50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -25,21 +35,22 @@ const Navbar = () => {
         {/* Desktop menu */}
         <div className="hidden md:flex space-x-6">
           {menuItems.map((item) => (
-            <ScrollLink
+            <button
               key={item.target}
-              to={item.target}
-              spy={true}
-              smooth={true}
-              offset={-70}
-              duration={500}
+              onClick={() => scrollToSection(item.target)}
               className="text-foreground/80 hover:text-primary cursor-pointer transition-colors"
             >
               {item.name}
-            </ScrollLink>
+            </button>
           ))}
         </div>
 
-        <Button variant="default" size="sm" className="hidden md:block">
+        <Button 
+          variant="default" 
+          size="sm" 
+          className="hidden md:block"
+          onClick={() => scrollToSection("contact")}
+        >
           Связаться
         </Button>
 
@@ -57,20 +68,20 @@ const Navbar = () => {
         <div className="md:hidden bg-background/95 backdrop-blur-sm py-4 px-4 border-b border-border/50 animate-fade-in">
           <div className="flex flex-col space-y-4">
             {menuItems.map((item) => (
-              <ScrollLink
+              <button
                 key={item.target}
-                to={item.target}
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={500}
-                onClick={() => setIsMenuOpen(false)}
-                className="text-foreground/80 hover:text-primary py-2 transition-colors"
+                onClick={() => scrollToSection(item.target)}
+                className="text-foreground/80 hover:text-primary py-2 transition-colors text-left"
               >
                 {item.name}
-              </ScrollLink>
+              </button>
             ))}
-            <Button variant="default" size="sm" className="mt-2 w-full">
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="mt-2 w-full"
+              onClick={() => scrollToSection("contact")}
+            >
               Связаться
             </Button>
           </div>
